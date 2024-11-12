@@ -1,39 +1,37 @@
 
 "use client"
-import React, { useState} from "react";
-
-import { Task } from "../interface/task";
+import React, { useEffect, useState } from "react";
 import Column from "./column";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, AppDispatch } from "../../../store/store";
 
 
-const initialTasks: Task[] = [
-    {
-      id: "1",
-      content: "Task 1",
-      status: "To Do",
-    },
-    {
-      id: "2",
-      content: "Task 2",
-      status: "In Progress",
-    },
-    {
-      id: "3",
-      content: "Task 3",
-      status: "Done",
-    },
-];
+import { Task } from "@/app/interface/task";
+import Modal from "@/app/components/modal";
+import TaskForm from "@/app/components/taskForm";
+import { subscribeToTasks, updateTaskStatusInFirestore } from "@/store/slices/taskSlice";
+
 
 const TaskBoard: React.FC = () => {
-    const [tasks, setTasks] = useState<Task[]>(initialTasks);
+    const tasks = useSelector((state: RootState) => state.tasks.tasks);
+    const dispatch = useDispatch<AppDispatch>();
+    const [isModalOpen, setModalOpen] = useState<boolean>(false);
+    const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
 
-    const updateTaskStatus = (taskId: string, newStatus: Task["status"]) => {
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === taskId ? { ...task, status: newStatus } : task
-          )
-        );
-      };
+    const handleUpdateTaskStatus = (taskId: string, newStatus: Task["status"]) => {
+        dispatch(updateTaskStatusInFirestore({ taskId, newStatus }));
+        
+    };
+    const openEditTaskModal = (taskId: string) => {
+        setEditingTaskId(taskId); // Configurar el ID para editar
+        setModalOpen(true);
+    };
+
+    useEffect(() => {
+        dispatch(subscribeToTasks());
+    }, [dispatch]);
+
+    
     return (
       <div className="grid grid-cols-3 gap-4 p-4">
       {["To Do", "In Progress", "Done"].map((status) => (
@@ -41,10 +39,19 @@ const TaskBoard: React.FC = () => {
           key={status}
           status={status as Task["status"]}
           tasks={tasks.filter((task) => task.status === status)}
-          updateTaskStatus={updateTaskStatus}
+          updateTaskStatus={handleUpdateTaskStatus}
+          onEditTask={openEditTaskModal}
         />
       ))}
+      <div>
+        {isModalOpen && (
+        <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
+          <TaskForm taskId={editingTaskId} closeForm={() => setModalOpen(false)} />
+        </Modal>
+      )}
+        </div>
     </div>
+    
     );
   };
   

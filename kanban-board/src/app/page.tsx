@@ -14,15 +14,6 @@ export default function Home() {
       </header>
 
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/kanban-logo.svg"
-          alt="Kanban Board logo"
-          width={180}
-          height={38}
-          priority
-        />
-
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <Link href="/auth/login" 
           className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-blue-500 text-white gap-2 hover:bg-blue-600 text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"

@@ -4,7 +4,11 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../store/slices/authSlice";
 import { useRouter } from "next/navigation";
 
-const Nav: React.FC = () => {
+interface NavProps {
+    openTaskForm: () => void; // Prop para abrir el modal de nueva tarea
+}
+
+const Nav:  React.FC<NavProps> = ({ openTaskForm }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -15,21 +19,19 @@ const Nav: React.FC = () => {
   };
 
   return (
-    <nav className="bg-blue-500 text-white p-4">
-      <div className="flex justify-between items-center">
-        <h1 className="text-xl font-bold">Task Board</h1>
+    <nav className="bg-blue-600 text-white p-4 shadow-md">
+      <div className="container mx-auto flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Task Board</h1>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="sm:hidden block focus:outline-none"
         >
           ☰
         </button>
-      </div>
-
-      <ul
+        <ul
         className={`${
           isOpen ? "block" : "hidden"
-        } sm:flex space-y-4 sm:space-y-0 sm:space-x-6 mt-4 sm:mt-0`}
+        } sm:flex space-y-4 sm:space-y-0 sm:space-x-6 mt-4 sm:mt-0 text-lg`}
       >
         <li>
           <a href="/dashboard" className="hover:underline">
@@ -42,14 +44,23 @@ const Nav: React.FC = () => {
           </a>
         </li>
         <li>
+            <button
+              onClick={openTaskForm}
+              className="bg-green-500 px-4 py-2 rounded hover:bg-green-600 transition"
+            >
+              + New Task
+            </button>
+          </li>
+        <li>
           <button
             onClick={handleLogout}
-            className="bg-red-500 px-4 py-2 rounded hover:bg-red-600"
+            className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
           >
             Logout
           </button>
         </li>
       </ul>
+      </div>
     </nav>
   );
 };

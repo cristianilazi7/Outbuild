@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "./slices/userSlice";
 import authReducer from "./slices/authSlice";
+import taskReducer from "./slices/taskSlice";
 import {
     FLUSH,
     REHYDRATE,
@@ -13,7 +14,7 @@ import {
   } from "redux-persist";
 
 
-const authPersistConfig = {
+  const authPersistConfig = {
     key: 'auth',
     storage,
   };
@@ -23,14 +24,21 @@ const authPersistConfig = {
     storage,
   };
 
+  const taskPersistConfig = {
+    key: "tasks",
+    storage,
+  };
+
 const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
 const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
+const persistedTaskReducer = persistReducer(taskPersistConfig, taskReducer);
 
 
 const store = configureStore({
     reducer: {
         user: persistedUserReducer,
         auth: persistedAuthReducer,
+        tasks: persistedTaskReducer,
     },
     middleware: (getDefaultMiddleware) => 
         getDefaultMiddleware({
