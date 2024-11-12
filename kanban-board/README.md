@@ -1,3 +1,20 @@
+
+## Getting Started
+
+readme_content = """
+# Task Management Application
+
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+First, install the dependencies:
+
+```bash
+npm install --legacy-peer-deps
+
+Note: Use the --legacy-peer-deps flag due to compatibility issues between react-redux and the current React version.
+
+Then, run the development server:
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -16,21 +33,39 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Firebase Setup
+Create a Firebase Project
+Go to Firebase Console and create a new project.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Enable Email Authentication
+Navigate to Authentication > Sign-in method in the Firebase Console and enable the Email/Password provider.
 
-## Learn More
+Set Up Environment Variables
+Create a .env.local file in the root of the project and configure it as follows:
 
-To learn more about Next.js, take a look at the following resources:
+NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project_id.appspot.com
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Set Firestore Security Rules
+Use the following security rules to ensure only authenticated users can access the tasks:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+rules_version = '2';
 
-## Deploy on Vercel
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /tasks/{taskId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Features
+Task Management: Create, edit, delete, and update tasks.
+Firebase Integration: Syncs tasks in real-time with Firestore.
+Authentication: Protects routes to ensure only authenticated users can access the task board.
+State Management: Uses Redux Toolkit with persisted state for tasks and user authentication.
