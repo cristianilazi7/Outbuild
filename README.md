@@ -72,3 +72,6 @@ State Management: Uses Redux Toolkit with persisted state for tasks and user aut
 
 test app online: 
 https://kanban-outbuild.web.app
+
+user1: cristianca@gmail.com password: test123
+user2: silvia@gmail.com password: silvia123
