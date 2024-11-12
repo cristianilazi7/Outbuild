@@ -6,8 +6,11 @@ import TaskBoard from './components/taskBoard';
 import Nav from '../components/nav';
 import Modal from '../components/modal';
 import TaskForm from '../components/taskForm';
+import { RootState } from '@/store/store';
+import { useSelector } from 'react-redux';
 
 const DashboardPage: React.FC = () => {
+  const email = useSelector((state: RootState) => state.user.email);
   const [isModalOpen, setModalOpen] = useState(false);
   const openTaskForm = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
@@ -15,7 +18,7 @@ const DashboardPage: React.FC = () => {
   return (
     <AuthGuard>
       <div>
-        <Nav openTaskForm={openTaskForm} />
+        <Nav email={email ?? ''} openTaskForm={openTaskForm} />
         <TaskBoard />
         {isModalOpen && (
           <Modal isOpen={isModalOpen} onClose={closeModal}>

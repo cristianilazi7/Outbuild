@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store/slices/authSlice";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface NavProps {
+    email: string;
     openTaskForm: () => void; // Prop para abrir el modal de nueva tarea
 }
 
-const Nav:  React.FC<NavProps> = ({ openTaskForm }) => {
+const Nav:  React.FC<NavProps> = ({ email, openTaskForm }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
@@ -20,48 +22,46 @@ const Nav:  React.FC<NavProps> = ({ openTaskForm }) => {
 
   return (
     <nav className="bg-blue-600 text-white p-4 shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Task Board</h1>
+  <div className="container mx-auto flex justify-between items-center">
+    <h1 className="text-2xl font-bold">Task Board: {email} </h1>
+    <button
+      onClick={() => setIsOpen(!isOpen)}
+      className="sm:hidden block focus:outline-none"
+    >
+      ☰
+    </button>
+    <ul
+      className={`${
+        isOpen ? "block" : "hidden"
+      } sm:flex items-center space-y-4 sm:space-y-0 sm:space-x-6 mt-4 sm:mt-0 text-lg`}
+    >
+      <li>
+        <Link href="/" className="hover:underline px-4 py-2 block">
+          home
+        </Link>
+      </li>
+      <li>
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="sm:hidden block focus:outline-none"
+          onClick={openTaskForm}
+          className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200 ease-in-out flex-shrink-0"
+          style={{ height: "40px" }}
         >
-          ☰
+          + New Task
         </button>
-        <ul
-        className={`${
-          isOpen ? "block" : "hidden"
-        } sm:flex space-y-4 sm:space-y-0 sm:space-x-6 mt-4 sm:mt-0 text-lg`}
-      >
-        <li>
-          <a href="/dashboard" className="hover:underline">
-            Dashboard
-          </a>
-        </li>
-        <li>
-          <a href="/profile" className="hover:underline">
-            Profile
-          </a>
-        </li>
-        <li>
-            <button
-              onClick={openTaskForm}
-              className="bg-green-500 px-4 py-2 rounded hover:bg-green-600 transition"
-            >
-              + New Task
-            </button>
-          </li>
-        <li>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 px-4 py-2 rounded hover:bg-red-600 transition"
-          >
-            Logout
-          </button>
-        </li>
-      </ul>
-      </div>
-    </nav>
+      </li>
+      <li>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-200 ease-in-out flex-shrink-0"
+          style={{ height: "40px" }}
+        >
+          Logout
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
   );
 };
 

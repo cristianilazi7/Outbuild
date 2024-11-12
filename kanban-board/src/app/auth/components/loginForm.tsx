@@ -29,39 +29,43 @@ const LoginForm: React.FC = () => {
     };
 
     return (
-        <div>
-             <h2>Login</h2>
-            <form onSubmit={handleLogin} className="space-y-4">
+        <div className="flex items-center justify-center min-h-screen bg-gray-100">
+            <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+                <h2 className="text-2xl font-bold text-center text-gray-700">Login</h2>
+                <form onSubmit={handleLogin} className="space-y-4">
                 <div>
-                    <label>Email</label>
+                    <label className="block text-sm font-medium text-gray-700">Email</label>
                     <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="border p-2 w-full"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                 </div>
                 <div>
-                    <label>Password</label>
+                    <label className="block text-sm font-medium text-gray-700">Password</label>
                     <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        className="border p-2 w-full"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="block w-full px-3 py-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     />
                 </div>
-                {error && <p className="text-red-500">{error}</p>}
+                {error && <p className="text-sm text-red-500">{error}</p>}
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="bg-blue-500 text-white px-4 py-2"
+                    className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                     {isLoading ? 'Logging in...' : 'Login'}
                 </button>
-            </form>
+                </form>
+                
+            </div>
         </div>
+
     );
 };
 

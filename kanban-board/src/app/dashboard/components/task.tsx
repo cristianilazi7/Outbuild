@@ -22,32 +22,36 @@ const TaskComponent: React.FC<TaskProps> = ({ task, updateTaskStatus, onEditTask
   };
 
   return (
-    <div className="bg-white p-4 rounded shadow flex justify-between items-center">
-        <div>
-        <p className="font-semibold">{task.content}</p>
-        <select
-            value={task.status}
-            onChange={handleStatusChange}
-            className="mt-2 w-full border rounded p-1"
-        >
-            <option value="To Do">To Do</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Done">Done</option>
-        </select>
-        </div>
-            <button
-            onClick={onEditTask}
-            className="ml-4 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
-            >
-            Edit
-            </button>
-            <button
-            onClick={handleDeleteTask}
-            className="ml-4 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
-            >
-            Delete
-        </button>
+    <div className="bg-white p-4 rounded-lg shadow">
+    <div className="mb-2">
+      <p className="font-semibold text-gray-800 text-left">{task.content}</p>
     </div>
+    <div className="flex items-center space-x-4">
+      <select
+        value={task.status}
+        onChange={handleStatusChange}
+        className="flex-grow border border-gray-300 rounded-md p-2 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      >
+        <option value="To Do">To Do</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Done">Done</option>
+      </select>
+      <button
+        onClick={onEditTask}
+        className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition duration-200 ease-in-out flex-shrink-0"
+        style={{ height: '100%' }}
+      >
+        Edit
+      </button>
+      <button
+        onClick={handleDeleteTask}
+        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition duration-200 ease-in-out flex-shrink-0"
+        style={{ height: '100%' }}
+      >
+        Delete
+      </button>
+    </div>
+  </div>  
   );
 };
 

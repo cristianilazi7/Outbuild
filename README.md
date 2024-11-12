@@ -69,3 +69,6 @@ Task Management: Create, edit, delete, and update tasks.
 Firebase Integration: Syncs tasks in real-time with Firestore.
 Authentication: Protects routes to ensure only authenticated users can access the task board.
 State Management: Uses Redux Toolkit with persisted state for tasks and user authentication.
+
+test app online: 
+https://kanban-outbuild.web.app

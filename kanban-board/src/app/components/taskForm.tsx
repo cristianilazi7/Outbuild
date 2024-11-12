@@ -36,25 +36,35 @@ const TaskForm: React.FC<TaskFormProps> = ({ taskId, closeForm }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="p-4 bg-gray-100 rounded shadow">
-        <input
-            type="text"
-            placeholder="Task content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            className="w-full p-2 border rounded mb-4"
-        />
-        <button type="submit"
-         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
-        >{task ? "Update" : "Add"}</button>
-        <button type="button" 
-            onClick={closeForm}
-            className="ml-2 bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition"
-        >
-            Cancel
-        </button>
+        <form onSubmit={handleSubmit} className="p-4 bg-white rounded-lg shadow-md space-y-4">
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Task Content</label>
+                <input
+                type="text"
+                placeholder="Enter task content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                required
+                className="block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                />
+            </div>
+            <div className="flex justify-end space-x-3">
+                <button
+                type="submit"
+                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition ease-in-out duration-200"
+                >
+                {task ? "Update" : "Add"}
+                </button>
+                <button
+                type="button"
+                onClick={closeForm}
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition ease-in-out duration-200"
+                >
+                Cancel
+                </button>
+            </div>
         </form>
+
     );
  };
 
