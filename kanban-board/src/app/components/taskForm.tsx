@@ -3,16 +3,17 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
-import { addTaskToFirestore, updateTaskContentInFirestore,  } from "@/store/slices/taskSlice";
+import { addTaskToFirestore, updateTaskContentInFirestore, updateTaskEditingStatus,  } from "@/store/slices/taskSlice";
 import { Task } from "../interface/task";
 
 interface TaskFormProps {
     taskId?: string | null;
     closeForm: () => void;
+    email?: string;
   }
   
 
-const TaskForm: React.FC<TaskFormProps> = ({ taskId, closeForm }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ taskId, closeForm, email }) => {
   const dispatch = useDispatch<AppDispatch>();
   const task = useSelector((state: RootState) =>
     state.tasks.tasks.find((t: Task) => t.id === taskId)
@@ -29,11 +30,22 @@ const TaskForm: React.FC<TaskFormProps> = ({ taskId, closeForm }) => {
         e.preventDefault();
         if (task) {
         dispatch(updateTaskContentInFirestore({ taskId: task.id, newContent: content }));
+        dispatch(updateTaskEditingStatus({taskId: task.id, lastEditedBy: email, editing:false}));
         } else {
         dispatch(addTaskToFirestore({ content, status: "To Do" as Task["status"]}));
         }
         closeForm();
     };
+
+   const handleCancel = () => {
+        closeForm();
+        if (task)
+        dispatch(updateTaskEditingStatus({taskId: task.id, lastEditedBy: '', editing:false}));
+   };
+
+    useEffect(() => {
+        console.log("closeForm activated");
+    }, [closeForm]);
 
     return (
         <form onSubmit={handleSubmit} className="p-4 bg-white rounded-lg shadow-md space-y-4">
@@ -57,7 +69,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ taskId, closeForm }) => {
                 </button>
                 <button
                 type="button"
-                onClick={closeForm}
+                onClick={handleCancel}
                 className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition ease-in-out duration-200"
                 >
                 Cancel

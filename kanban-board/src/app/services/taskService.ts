@@ -100,3 +100,18 @@ export const deleteTaskFromFirestoreService = async (taskId: string): Promise<vo
       callback(tasks); // Llama al callback con las tareas actualizadas
     });
   };
+
+  export const updateTaskEditingStatusInFirestore = async (
+    taskId: string,
+    fieldsToUpdate: { lastEditedBy?: string; editing?: boolean }
+  ): Promise<void> => {
+    try {
+        console.log("taskId", taskId);
+        console.log("fieldsToUpdate", fieldsToUpdate);
+      const taskRef = doc(db, "tasks", taskId);
+      await updateDoc(taskRef, fieldsToUpdate);
+    } catch (error) {
+      console.error("Error updating task in Firestore:", error);
+      throw error;
+    }
+  };

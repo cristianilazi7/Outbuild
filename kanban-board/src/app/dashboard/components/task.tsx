@@ -3,9 +3,11 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { deleteTaskFromFirestore } from "@/store/slices/taskSlice";
 import { AppDispatch } from "@/store/store";
+import { Task } from "@/app/interface/task";
+
 
 interface TaskProps {
-  task: { id: string; content: string; status: string };
+  task: Task;
   updateTaskStatus: (taskId: string, newStatus: "To Do" | "In Progress" | "Done") => void;
   onEditTask: () => void;
 }
@@ -21,10 +23,24 @@ const TaskComponent: React.FC<TaskProps> = ({ task, updateTaskStatus, onEditTask
     dispatch(deleteTaskFromFirestore(task.id));
   };
 
+
   return (
     <div className="bg-white p-4 rounded-lg shadow">
     <div className="mb-2">
       <p className="font-semibold text-gray-800 text-left">{task.content}</p>
+      {task.lastEditedBy && (
+        <div className="mt-2 text-sm text-gray-600">
+          {task.editing ? (
+            <span className="mt-2 text-sm font-semibold text-red-500">
+              Editing by: {task.lastEditedBy}
+            </span>
+            ) : (
+            <span className="mt-2 text-sm text-gray-600">
+              Last edited by: {task.lastEditedBy}
+            </span>
+          )}
+        </div>
+      )}
     </div>
     <div className="flex items-center space-x-4">
       <select

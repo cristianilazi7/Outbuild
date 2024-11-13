@@ -58,7 +58,14 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+
+     // task
     match /tasks/{taskId} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // connected Users
+    match /connectedUsers/{userId} {
       allow read, write: if request.auth != null;
     }
   }

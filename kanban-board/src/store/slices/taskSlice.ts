@@ -6,6 +6,7 @@ import {
   updateTaskStatusInFirestoreService,
   updateTaskContentInFirestoreService,
   deleteTaskFromFirestoreService,
+  updateTaskEditingStatusInFirestore,
 } from "@/app/services/taskService"; 
 
 
@@ -104,6 +105,21 @@ export const deleteTaskFromFirestore = createAsyncThunk<
   }
 );
 
+export const updateTaskEditingStatus = createAsyncThunk<
+  { taskId: string; lastEditedBy?: string; editing?: boolean },
+  { taskId: string; lastEditedBy?: string; editing?: boolean },
+  { rejectValue: string }
+>("tasks/updateTaskEditingStatus", async (payload, { rejectWithValue }) => {
+  const { taskId, lastEditedBy, editing } = payload;
+  console.log("payload", payload);
+  try {
+    await updateTaskEditingStatusInFirestore(taskId, { lastEditedBy, editing });
+    return { taskId, lastEditedBy, editing }; 
+  } catch {
+    return rejectWithValue("Failed to update task editing status in Firestore.");
+  }
+});
+
 
 const taskSlice = createSlice({
     name: "task",
@@ -144,6 +160,14 @@ const taskSlice = createSlice({
           state.error = null;
         })
         .addCase(deleteTaskFromFirestore.rejected, (state, action) => {
+          state.error = action.payload as string;
+          state.loading = false;
+        })
+        .addCase(updateTaskEditingStatus.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(updateTaskEditingStatus.rejected, (state, action) => {
           state.error = action.payload as string;
           state.loading = false;
         });

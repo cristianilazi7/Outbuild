@@ -42,7 +42,7 @@ export default function Home() {
             >
               <Image
                 aria-hidden
-                src="/github.svg" // Cambia a un ícono relevante si tienes uno.
+                src="/github.svg"
                 alt="GitHub icon"
                 width={16}
                 height={16}
