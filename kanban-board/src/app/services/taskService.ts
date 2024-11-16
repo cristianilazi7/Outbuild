@@ -106,8 +106,7 @@ export const deleteTaskFromFirestoreService = async (taskId: string): Promise<vo
     fieldsToUpdate: { lastEditedBy?: string; editing?: boolean }
   ): Promise<void> => {
     try {
-        console.log("taskId", taskId);
-        console.log("fieldsToUpdate", fieldsToUpdate);
+        
       const taskRef = doc(db, "tasks", taskId);
       await updateDoc(taskRef, fieldsToUpdate);
     } catch (error) {
